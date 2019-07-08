@@ -16,7 +16,7 @@ async function getData(res, segments) {
   return leaderboards;
 }
 
-router.get('/explore', (req, res) => {
+router.get('/', (req, res) => {
   const istanbul = locations.istanbul
   const {
     latitude_southWest,
