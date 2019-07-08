@@ -2,7 +2,7 @@ const express = require('express')
 const axios = require('axios')
 
 const locations = require('../helpers/locations');
-const { getRiders } = require('../controllers/segments');
+const { getRiders } = require('../controllers/riders');
 const { ACCESS_TOKEN, BASE_ADDRESS } = require("../helpers/constants");
 
 const router = express.Router();

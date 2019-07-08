@@ -8,8 +8,6 @@ const searchForEntry = (arr, object) => {
   return -1;
 };
 
-
-
 module.exports = {
   searchForEntry
 };
