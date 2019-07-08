@@ -1,12 +1,14 @@
 const express = require('express')
 const axios = require('axios')
-const router = express.Router()
-const locations = require('../helpers/locations')
-const calculateResponse = require('../helpers/methods').calculateResponse;
 
+const locations = require('../helpers/locations');
+const { getRiders } = require('../controllers/segments');
+const { ACCESS_TOKEN, BASE_ADDRESS } = require("../helpers/constants");
+
+const router = express.Router();
 
 async function getData(res, segments) {
-  let leaderboards = await calculateResponse(segments);
+  let leaderboards = await getRiders(segments);
   leaderboards = leaderboards.filter(x => {
     return x.count > 1
   })
@@ -21,20 +23,18 @@ router.get('/explore', (req, res) => {
     longitude_southWest,
     latitude_northEast,
     longitude_northEast
-  } = istanbul
+  } = istanbul;
 
   axios.defaults.headers.common = {
-    Authorization: `Bearer f3274afb2f45990602e2f656d47c783aac613bba`
+    Authorization: `Bearer ${ACCESS_TOKEN}`
   }
-  
-  let leaderboards = [];
 
-  axios.get(`https://www.strava.com/api/v3/segments/explore?bounds=${latitude_southWest},${longitude_southWest},${latitude_northEast},${longitude_northEast}`).then(data => {
+  axios.get(`${BASE_ADDRESS}/segments/explore?bounds=${latitude_southWest},${longitude_southWest},${latitude_northEast},${longitude_northEast}`).then(data => {
     let segments = data.data.segments.sort((a, b) => {
       return b.avg_grade - a.avg_grade
     }).slice(0, 10);
 
-    leaderboards = getData(res, segments);
+    getData(res, segments);
   });
 });
 
